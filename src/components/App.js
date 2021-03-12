@@ -42,7 +42,10 @@ const App = () => {
       <BrowserRouter>
         <div>
           <Header />
-
+          {/* Route checks path as URL.contains(path) so eg.
+      /streams/new will also show our root '/' component
+      StreamList as URL contains '/'. To prevent this
+      we specify exact */}
           <Route path="/" exact component={StreamList} />
           <Route path="/streams/new" exact component={StreamCreate} />
           <Route path="/streams/edit" exact component={StreamEdit} />
