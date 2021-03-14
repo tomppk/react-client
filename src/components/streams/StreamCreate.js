@@ -2,6 +2,8 @@ import React from "react";
 // Different capitalization indicates that
 // Field is a component, reduxForm is a function.
 import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import { createStream } from "../../actions";
 
 // Field must have name that describes its function.
 // Field does not render anything by itself, assign
@@ -58,10 +60,13 @@ class StreamCreate extends React.Component {
   };
 
   // onSubmit gets called by our field input values
-  // inside formValues object
-  onSubmit(formValues) {
-    console.log(formValues);
-  }
+  // inside formValues object. We call createStream action
+  // creator that will submit our formValues to JSON-server.
+  // Or rather try to make a POST request to our API-server.
+  // Using arrow function to bind this
+  onSubmit = (formValues) => {
+    this.props.createStream(formValues);
+  };
 
   // Field components from redux-form handle all the logic
   // of updating state in redux store etc. We just need
@@ -77,6 +82,9 @@ class StreamCreate extends React.Component {
   render() {
     return (
       <form
+        // Callbacks with 'this' need to be created using
+        // arrow functions to bind 'this' to this component
+        // otherwise will cause undefined error
         onSubmit={this.props.handleSubmit(this.onSubmit)}
         className="ui form error">
         <Field name="title" component={this.renderInput} label="Enter Title" />
@@ -118,7 +126,9 @@ const validate = (formValues) => {
 // reduxForm takes in object where we set form as key and
 // descriptive name for form as value.
 // Validate key set as our validate function
-export default reduxForm({
+const formWrapped = reduxForm({
   form: "streamCreate",
   validate: validate,
 })(StreamCreate);
+
+export default connect(null, { createStream })(formWrapped);

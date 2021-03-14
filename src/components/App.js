@@ -1,12 +1,13 @@
 import React from "react";
 // Always install react-router-dom for dom based web apps
-import { BrowserRouter, Route } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import StreamCreate from "./streams/StreamCreate";
 import StreamEdit from "./streams/StreamEdit";
 import StreamDelete from "./streams/StreamDelete";
 import StreamList from "./streams/StreamList";
 import StreamShow from "./streams/StreamShow";
 import Header from "./Header";
+import history from "../history";
 
 // We never use <a /> link tags in React Apps. Clicking a
 // link tag browser makes a request to url /pagetwo and
@@ -39,20 +40,22 @@ import Header from "./Header";
 const App = () => {
   return (
     <div className="ui container">
-      <BrowserRouter>
+      {/* We pass in our own history object */}
+      <Router history={history}>
         <div>
           <Header />
           {/* Route checks path as URL.contains(path) so eg.
       /streams/new will also show our root '/' component
       StreamList as URL contains '/'. To prevent this
-      we specify exact */}
+      we specify exact. Colon : is the character that
+      notifies that this is a variable (or a wildcard value)and not a fixed url */}
           <Route path="/" exact component={StreamList} />
           <Route path="/streams/new" exact component={StreamCreate} />
-          <Route path="/streams/edit" exact component={StreamEdit} />
+          <Route path="/streams/edit/:id" exact component={StreamEdit} />
           <Route path="/streams/delete" exact component={StreamDelete} />
           <Route path="/streams/show" exact component={StreamShow} />
         </div>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 };
