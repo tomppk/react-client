@@ -1,6 +1,6 @@
 import React from "react";
 // Always install react-router-dom for dom based web apps
-import { Router, Route } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import StreamCreate from "./streams/StreamCreate";
 import StreamEdit from "./streams/StreamEdit";
 import StreamDelete from "./streams/StreamDelete";
@@ -48,12 +48,16 @@ const App = () => {
       /streams/new will also show our root '/' component
       StreamList as URL contains '/'. To prevent this
       we specify exact. Colon : is the character that
-      notifies that this is a variable (or a wildcard value)and not a fixed url */}
-          <Route path="/" exact component={StreamList} />
-          <Route path="/streams/new" exact component={StreamCreate} />
-          <Route path="/streams/edit/:id" exact component={StreamEdit} />
-          <Route path="/streams/delete/:id" exact component={StreamDelete} />
-          <Route path="/streams/show" exact component={StreamShow} />
+      notifies that this is a variable (or a wildcard value)and not a fixed url. 
+      Switch is only going to show one Route at a time. First Route path that gets matched is only going to show and
+      no other potential matching routes*/}
+          <Switch>
+            <Route path="/" exact component={StreamList} />
+            <Route path="/streams/new" exact component={StreamCreate} />
+            <Route path="/streams/edit/:id" exact component={StreamEdit} />
+            <Route path="/streams/delete/:id" exact component={StreamDelete} />
+            <Route path="/streams/:id" exact component={StreamShow} />
+          </Switch>
         </div>
       </Router>
     </div>
